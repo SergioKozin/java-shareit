@@ -1,7 +1,5 @@
 package ru.practicum.shareit.item;
 
-import jakarta.validation.Valid;
-import org.springframework.stereotype.Service;
 import ru.practicum.shareit.item.dto.ItemDto;
 
 import java.util.Collection;

@@ -4,4 +4,6 @@ import ru.practicum.shareit.item.Item;
 
 public interface ItemRepository {
     Long add(Item item);
+
+    Item get(Long itemId);
 }

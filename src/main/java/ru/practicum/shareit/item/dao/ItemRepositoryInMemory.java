@@ -2,20 +2,23 @@ package ru.practicum.shareit.item.dao;
 
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.item.Item;
-import ru.practicum.shareit.user.User;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Repository
-public class ItemRepositoryInMemory implements ItemRepository{
+public class ItemRepositoryInMemory implements ItemRepository {
     private final Map<Long, Item> items = new HashMap<>();
 
     @Override
-    public Long add(Item item){
+    public Long add(Item item) {
         item.setId(getNextId());
         items.put(item.getId(), item);
         return item.getId();
+    }
+
+    public Item get(Long itemId) {
+        return items.get(itemId);
     }
 
     private long getNextId() {

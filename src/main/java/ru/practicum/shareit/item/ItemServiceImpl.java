@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item;
 
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.item.dao.ItemRepository;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.dao.UserRepository;
@@ -21,7 +22,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto addItem(ItemDto itemDto, long userId) {
         itemDto.setOwner(userRepository.get(userId));
-        return getItem(itemRepository.add(ItemMapper.toItemEntity(itemDto)));
+        if (itemDto.getOwner() == null) throw new NotFoundException("User не найден!");
+        return ItemMapper.toItemDto(itemRepository.get(itemRepository.add(ItemMapper.toItemEntity(itemDto))));
     }
 
     @Override

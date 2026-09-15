@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item;
 
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
 
@@ -15,6 +16,7 @@ public class ItemController {
         this.itemService = itemService;
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ItemDto createItem(@Valid @RequestBody ItemDto itemDto, @RequestHeader("X-Sharer-User-Id") long userId) {
         return itemService.addItem(itemDto, userId);
