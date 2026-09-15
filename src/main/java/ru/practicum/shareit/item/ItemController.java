@@ -4,9 +4,8 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
 
-/**
- * TODO Sprint add-controllers.
- */
+import java.util.Collection;
+
 @RestController
 @RequestMapping("/items")
 public class ItemController {
@@ -17,29 +16,32 @@ public class ItemController {
     }
 
     @PostMapping
-    public ItemDto createItem(@Valid @RequestBody ItemDto itemDto, @RequestHeader("X-Sharer-User-Id") long userId){
+    public ItemDto createItem(@Valid @RequestBody ItemDto itemDto, @RequestHeader("X-Sharer-User-Id") long userId) {
         return itemService.addItem(itemDto, userId);
     }
+
+    /*
+    Редактирование вещи. Эндпоинт PATCH /items/{itemId}. Изменить можно название, описание и статус доступа к аренде.
+    Редактировать вещь может только её владелец.
+    */
+    @PatchMapping("/{itemId}")
+    public ItemDto updateItem(@Valid @PathVariable long itemId, @RequestHeader("X-Sharer-User-Id") long userId) {
+        return itemService.updateItem(itemId, userId);
+    }
+
+    @GetMapping("/{itemId}")
+    public ItemDto getItemById(@Valid @PathVariable long itemId) {
+        return itemService.getItem(itemId);
+    }
+
+    /*
+    Поиск вещи потенциальным арендатором.
+    Пользователь передаёт в строке запроса текст, и система ищет вещи, содержащие этот текст в названии или описании.
+    Происходит по эндпоинту /items/search?text={text}, в text передаётся текст для поиска.
+    Проверьте, что поиск возвращает только доступные для аренды вещи.
+    */
+    @GetMapping("/search")
+    public Collection<ItemDto> getItemsBySearch(@RequestParam String text) {
+        return itemService.getItemsBySearch(text);
+    }
 }
-/*
-Вот основные сценарии, которые должно поддерживать приложение:
-Добавление новой вещи. Будет происходить по эндпоинту POST /items.
-На вход поступает объект ItemDto.
-userId в заголовке X-Sharer-User-Id — это идентификатор пользователя, который добавляет вещь.
-Именно этот пользователь — владелец вещи.
-Идентификатор владельца будет поступать на вход в каждом из запросов, рассмотренных далее.
-
-Редактирование вещи. Эндпоинт PATCH /items/{itemId}. Изменить можно название, описание и статус доступа к аренде.
-Редактировать вещь может только её владелец.
-
-Просмотр информации о конкретной вещи по её идентификатору. Эндпоинт GET /items/{itemId}.
-Информацию о вещи может просмотреть любой пользователь.
-
-Просмотр владельцем списка всех его вещей с указанием названия и описания для каждой из них. Эндпоинт GET /items.
-
-Поиск вещи потенциальным арендатором.
-Пользователь передаёт в строке запроса текст, и система ищет вещи, содержащие этот текст в названии или описании.
-Происходит по эндпоинту /items/search?text={text}, в text передаётся текст для поиска.
-Проверьте, что поиск возвращает только доступные для аренды вещи.
-
- */

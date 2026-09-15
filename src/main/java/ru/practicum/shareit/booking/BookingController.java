@@ -1,7 +1,8 @@
 package ru.practicum.shareit.booking;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.user.UserMapper;
 
 /**
  * TODO Sprint add-bookings.
