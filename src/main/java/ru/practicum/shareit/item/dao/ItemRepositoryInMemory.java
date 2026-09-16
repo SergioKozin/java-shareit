@@ -21,6 +21,10 @@ public class ItemRepositoryInMemory implements ItemRepository {
         return items.get(itemId);
     }
 
+    public boolean delete(Long itemId) {
+        return items.remove(itemId) != null;
+    }
+
     private long getNextId() {
         long currentMaxId = items.keySet()
                 .stream()

@@ -51,4 +51,10 @@ public class ErrorHandler {
     public ErrorResponse handle(final DuplicatedDataException e) {
         return new ErrorResponse(e.getMessage());
     }
+
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handle(final ForbiddenException e) {
+        return new ErrorResponse(e.getMessage());
+    }
 }

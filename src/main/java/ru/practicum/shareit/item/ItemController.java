@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.UpdateItemDto;
 
 import java.util.Collection;
 
@@ -22,26 +23,33 @@ public class ItemController {
         return itemService.addItem(itemDto, userId);
     }
 
-    /*
-    Редактирование вещи. Эндпоинт PATCH /items/{itemId}. Изменить можно название, описание и статус доступа к аренде.
-    Редактировать вещь может только её владелец.
-    */
+    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{itemId}")
-    public ItemDto updateItem(@Valid @PathVariable long itemId, @RequestHeader("X-Sharer-User-Id") long userId) {
-        return itemService.updateItem(itemId, userId);
+    public ItemDto updateItem(@Valid @PathVariable long itemId,
+                              @RequestHeader("X-Sharer-User-Id") long userId,
+                              @Valid @RequestBody UpdateItemDto updateItemDto) {
+        return itemService.updateItem(itemId, userId, updateItemDto);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{itemId}")
     public ItemDto getItemById(@Valid @PathVariable long itemId) {
         return itemService.getItem(itemId);
     }
 
-    /*
-    Поиск вещи потенциальным арендатором.
-    Пользователь передаёт в строке запроса текст, и система ищет вещи, содержащие этот текст в названии или описании.
-    Происходит по эндпоинту /items/search?text={text}, в text передаётся текст для поиска.
-    Проверьте, что поиск возвращает только доступные для аренды вещи.
-    */
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{itemId}")
+    public boolean getItemById(@Valid @PathVariable long itemId, @RequestHeader("X-Sharer-User-Id") long userId) {
+        return itemService.deleteItem(itemId, userId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    public Collection<ItemDto> getItemsByUser(@RequestHeader("X-Sharer-User-Id") long userId) {
+        return itemService.getItemsByUser(userId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/search")
     public Collection<ItemDto> getItemsBySearch(@RequestParam String text) {
         return itemService.getItemsBySearch(text);

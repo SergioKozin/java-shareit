@@ -6,4 +6,6 @@ public interface ItemRepository {
     Long add(Item item);
 
     Item get(Long itemId);
+
+    boolean delete(Long itemId);
 }
