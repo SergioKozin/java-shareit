@@ -10,7 +10,6 @@ import ru.practicum.shareit.request.dao.ItemRequestRepository;
 import ru.practicum.shareit.user.dao.UserRepository;
 
 import java.util.Collection;
-import java.util.List;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -58,12 +57,11 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Collection<ItemDto> getItemsByUser(long userId) {
-        return List.of();
+        return itemRepository.getItemsByUser(userId).stream().map(ItemMapper::toItemDto).toList();
     }
 
-    // поиск текста в описание и названии вещи
     @Override
     public Collection<ItemDto> getItemsBySearch(String text) {
-        return List.of();
+        return itemRepository.getItemsBySearch(text).stream().map(ItemMapper::toItemDto).toList();
     }
 }
