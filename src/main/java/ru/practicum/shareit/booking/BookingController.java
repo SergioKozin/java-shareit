@@ -14,12 +14,18 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
-    @PostMapping("/{itemId}")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BookingDto createBooking(@Valid @PathVariable Long itemId,
-                                    @Valid @RequestBody BookingDto bookingDto,
+    public BookingDto createBooking(@Valid @RequestBody BookingDto bookingDto,
                                     @RequestHeader("X-Sharer-User-Id") long userId) {
-        return bookingService.addBooking(itemId, bookingDto, userId);
+        return bookingService.addBooking(bookingDto, userId);
+    }
+
+    @GetMapping("/{bookingId}")
+    @ResponseStatus(HttpStatus.OK)
+    public BookingDto getBooking(@Valid @PathVariable Long bookingId,
+                                 @RequestHeader("X-Sharer-User-Id") long userId) {
+        return bookingService.getBooking(bookingId, userId);
     }
 
     @DeleteMapping("/{bookingId}")

@@ -3,6 +3,7 @@ package ru.practicum.shareit.booking;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.dao.BookingRepository;
 import ru.practicum.shareit.booking.dto.BookingDto;
+import ru.practicum.shareit.exceptions.ForbiddenException;
 import ru.practicum.shareit.item.dao.ItemRepository;
 import ru.practicum.shareit.user.dao.UserRepository;
 
@@ -21,12 +22,21 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDto addBooking(Long itemId, BookingDto bookingDto, long userId) {
-        bookingDto.setItem(itemRepository.get(itemId));
+    public BookingDto addBooking(BookingDto bookingDto, long userId) {
+        bookingDto.setItem(itemRepository.get(bookingDto.getItem().getId()));
         bookingDto.setBooker(userRepository.get(userId));
         return BookingMapper.toBookingDto(
                 bookingRepository.get(bookingRepository.add(BookingMapper.toBookingEntity(bookingDto)))
         );
+    }
+
+    @Override
+    public BookingDto getBooking(Long bookingId, long userId) {
+        if (bookingRepository.get(bookingId).getBooker().getId() == userId) {
+            return BookingMapper.toBookingDto(bookingRepository.get(bookingId));
+        } else {
+            throw new ForbiddenException("Это не ваше бронирование!");
+        }
     }
 
     @Override

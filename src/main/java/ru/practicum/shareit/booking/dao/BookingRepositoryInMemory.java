@@ -27,7 +27,7 @@ public class BookingRepositoryInMemory implements BookingRepository {
     @Override
     public boolean cancel(Long bookingId) {
         bookings.get(bookingId).setStatus(BookingStatus.CANCELED);
-        return bookings.remove(bookingId) != null;
+        return true;
     }
 
     private long getNextId() {
