@@ -42,8 +42,8 @@ public class ItemRepositoryInMemory implements ItemRepository {
                 .stream()
                 .filter(item -> item.getAvailable() == true)
                 .filter(item -> (item.getName().toLowerCase().contains(text.toLowerCase())
-                        | item.getDescription().toLowerCase().contains(text.toLowerCase()))
-                        & !text.isEmpty())
+                        || item.getDescription().toLowerCase().contains(text.toLowerCase()))
+                        && !text.isEmpty())
                 .toList();
     }
 
