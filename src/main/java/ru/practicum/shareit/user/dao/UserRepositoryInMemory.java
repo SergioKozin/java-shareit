@@ -52,6 +52,6 @@ public class UserRepositoryInMemory implements UserRepository {
                 .filter(entry -> Objects.equals(user.getEmail(), entry.getValue().getEmail()))
                 .map(Map.Entry::getKey)
                 .findFirst()
-                .orElse(null) != null;
+                .isPresent();
     }
 }
