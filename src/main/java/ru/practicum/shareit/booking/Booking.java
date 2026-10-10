@@ -1,5 +1,6 @@
 package ru.practicum.shareit.booking;
 
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import ru.practicum.shareit.item.Item;
@@ -15,5 +16,6 @@ public class Booking {
     private LocalDateTime end;
     private Item item;
     private User booker;
+    @Enumerated
     private BookingStatus status;
 }
