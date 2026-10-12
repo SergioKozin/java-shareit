@@ -65,7 +65,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Collection<ItemDto> getItemsBySearch(String text) {
-        if (text.isEmpty()) return new ArrayList<ItemDto>();
+        if (text.isEmpty()) return new ArrayList<>();
         return itemRepository.findAllBySearch(text)
                 .stream()
                 .filter(Item::getIsAvailable)

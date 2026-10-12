@@ -32,7 +32,7 @@ public class ItemRepositoryInMemory implements ItemRepository {
     public Collection<Item> getItemsByUser(Long userId) {
         return items.values()
                 .stream()
-                .filter(item -> item.getOwner().equals(userId))
+                .filter(item -> item.getOwner().getId().equals(userId))
                 .toList();
     }
 
