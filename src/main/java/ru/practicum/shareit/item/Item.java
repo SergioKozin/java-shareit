@@ -1,26 +1,30 @@
 package ru.practicum.shareit.item;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.User;
 
 @Data
 @Builder
-
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "items")
 public class Item {
-
-    private long id;
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
-
     private String description;
-
-    private Boolean available;
+    private Boolean isAvailable;
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
     private User owner;
+    @ManyToOne
+    @JoinColumn(name = "request_id")
     private ItemRequest request;
 }
