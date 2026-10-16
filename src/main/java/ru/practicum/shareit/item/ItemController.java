@@ -3,6 +3,7 @@ package ru.practicum.shareit.item;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
 
@@ -53,5 +54,13 @@ public class ItemController {
     @GetMapping("/search")
     public Collection<ItemDto> getItemsBySearch(@RequestParam String text) {
         return itemService.getItemsBySearch(text);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/{itemId}/comment")
+    public CommentDto createComment(@Valid @PathVariable long itemId,
+                                    @Valid @RequestBody CommentDto commentDto,
+                                    @RequestHeader("X-Sharer-User-Id") long userId) {
+        return itemService.addComment(itemId, commentDto, userId);
     }
 }

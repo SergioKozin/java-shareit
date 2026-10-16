@@ -4,6 +4,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import ru.practicum.shareit.booking.Booking;
+import ru.practicum.shareit.item.Comment;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -17,4 +21,7 @@ public class ItemDto {
     private Boolean available;
     private Long owner;
     private Long request;
+    private Booking lastBooking;
+    private Booking nextBooking;
+    private List<Comment> comments;
 }
