@@ -68,8 +68,6 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto getItem(long itemId) {
         ItemDto itemDto = ItemMapper.toItemDto(itemRepository.findById(itemId).orElseThrow());
-        List<Booking> lastBookings = bookingRepository.findByItemIdAndEndIsBefore(itemId, LocalDateTime.now(),
-                Sort.by(Sort.Direction.DESC, "end"));
         List<Booking> nextBookings = bookingRepository.findByItemIdAndStartIsAfter(itemId, LocalDateTime.now(),
                 Sort.by(Sort.Direction.ASC, "start"));
         if (!nextBookings.isEmpty()) itemDto.setNextBooking(nextBookings.getFirst());
