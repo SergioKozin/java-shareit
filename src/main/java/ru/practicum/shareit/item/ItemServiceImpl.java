@@ -2,6 +2,7 @@ package ru.practicum.shareit.item;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.exceptions.ForbiddenException;
@@ -19,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
@@ -36,6 +38,7 @@ public class ItemServiceImpl implements ItemService {
         this.bookingRepository = bookingRepository;
     }
 
+    @Transactional
     @Override
     public ItemDto addItem(ItemDto itemDto, long userId) {
         Item item = ItemMapper.toItemEntity(itemDto);
@@ -54,6 +57,7 @@ public class ItemServiceImpl implements ItemService {
         return ItemMapper.toItemDto(itemRepository.save(item));
     }
 
+    @Transactional
     @Override
     public ItemDto updateItem(long itemId, long userId, UpdateItemDto updateItemDto) {
         Item item = itemRepository.findById(itemId).orElseThrow();
@@ -75,6 +79,7 @@ public class ItemServiceImpl implements ItemService {
         return itemDto;
     }
 
+    @Transactional
     @Override
     public boolean deleteItem(long itemId, long userId) {
         if (!itemRepository.findById(itemId).orElseThrow().getOwner().getId().equals(userId))
@@ -112,6 +117,7 @@ public class ItemServiceImpl implements ItemService {
                 .toList();
     }
 
+    @Transactional
     @Override
     public CommentDto addComment(long itemId, CommentDto commentDto, long userId) {
         Comment savedcomment;

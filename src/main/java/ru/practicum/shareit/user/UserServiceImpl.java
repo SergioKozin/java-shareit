@@ -1,10 +1,12 @@
 package ru.practicum.shareit.user;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
 
 @Service
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
@@ -12,11 +14,13 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     @Override
     public UserDto addUser(UserDto userDto) {
         return UserMapper.toUserDto(userRepository.save(UserMapper.toUserEntity(userDto)));
     }
 
+    @Transactional
     @Override
     public UserDto updateUser(UserDto userDto, Long userId) {
         User user = userRepository.findById(userId)
@@ -42,10 +46,9 @@ public class UserServiceImpl implements UserService {
         return UserMapper.toUserDto(userRepository.findById(userId).orElseThrow());
     }
 
+    @Transactional
     @Override
-    public boolean deleteUser(Long userId) {
+    public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
-        return true;
     }
-
 }
