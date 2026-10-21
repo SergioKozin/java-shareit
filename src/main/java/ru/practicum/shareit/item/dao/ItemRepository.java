@@ -11,7 +11,7 @@ public interface ItemRepository {
 
     boolean delete(Long itemId);
 
-    Collection<Item> getItemsByUser(long userId);
+    Collection<Item> getItemsByUser(Long userId);
 
     Collection<Item> getItemsBySearch(String text);
 }

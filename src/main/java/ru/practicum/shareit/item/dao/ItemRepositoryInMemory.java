@@ -29,10 +29,10 @@ public class ItemRepositoryInMemory implements ItemRepository {
     }
 
     @Override
-    public Collection<Item> getItemsByUser(long userId) {
+    public Collection<Item> getItemsByUser(Long userId) {
         return items.values()
                 .stream()
-                .filter(item -> item.getOwner().getId() == userId)
+                .filter(item -> item.getOwner().getId().equals(userId))
                 .toList();
     }
 
@@ -40,7 +40,7 @@ public class ItemRepositoryInMemory implements ItemRepository {
     public Collection<Item> getItemsBySearch(String text) {
         return items.values()
                 .stream()
-                .filter(item -> item.getAvailable() == true)
+                .filter(item -> item.getIsAvailable() == true)
                 .filter(item -> (item.getName().toLowerCase().contains(text.toLowerCase())
                         || item.getDescription().toLowerCase().contains(text.toLowerCase()))
                         && !text.isEmpty())

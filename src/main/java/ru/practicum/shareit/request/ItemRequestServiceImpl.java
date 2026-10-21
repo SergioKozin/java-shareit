@@ -1,12 +1,13 @@
 package ru.practicum.shareit.request;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exceptions.ValidationException;
-import ru.practicum.shareit.request.dao.ItemRequestRepository;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
-import ru.practicum.shareit.user.dao.UserRepository;
+import ru.practicum.shareit.user.UserRepository;
 
 @Service
+@Transactional(readOnly = true)
 public class ItemRequestServiceImpl implements ItemRequestService {
     private final ItemRequestRepository itemRequestRepository;
     private final UserRepository userRepository;
@@ -16,23 +17,26 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     @Override
     public ItemRequestDto addItemRequest(ItemRequestDto itemRequestDto, Long userId) {
         ItemRequest itemRequest = ItemRequestMapper.toItemRequestEntity(itemRequestDto);
-        itemRequest.setRequestor(userRepository.get(userId));
-        return ItemRequestMapper
-                .toItemRequestDto(itemRequestRepository.get(itemRequestRepository.add(itemRequest)));
+        itemRequest.setRequestor(userRepository.findById(userId).orElseThrow());
+        return ItemRequestMapper.toItemRequestDto(itemRequestRepository
+                .findById(itemRequestRepository.save(itemRequest).getId()).orElseThrow());
     }
 
     @Override
     public ItemRequestDto getItemRequest(Long itemRequestId) {
-        return ItemRequestMapper.toItemRequestDto(itemRequestRepository.get(itemRequestId));
+        return ItemRequestMapper.toItemRequestDto(itemRequestRepository.findById(itemRequestId).orElseThrow());
     }
 
+    @Transactional
     @Override
     public boolean deleteItemRequest(Long itemRequestId, Long userId) {
-        if (!itemRequestRepository.get(itemRequestId).getRequestor().getId().equals(userId))
+        if (!itemRequestRepository.findById(itemRequestId).orElseThrow().getRequestor().getId().equals(userId))
             throw new ValidationException("Удалить нельзя. Это не ваш запрос!");
-        return itemRequestRepository.delete(itemRequestId);
+        itemRequestRepository.deleteById(itemRequestId);
+        return true;
     }
 }

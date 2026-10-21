@@ -8,9 +8,9 @@ import ru.practicum.shareit.user.dto.UserDto;
 @RestController
 @RequestMapping(path = "/users")
 public class UserController {
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
-    public UserController(UserService userService) {
+    public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
 
@@ -34,7 +34,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{userId}")
-    public boolean deleteUser(@PathVariable Long userId) {
-        return userService.deleteUser(userId);
+    public void deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
     }
 }
